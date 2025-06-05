@@ -39,6 +39,7 @@ fn test_insert_and_select() {
     assert_eq!(selected[0][0], Value::Int(1));
 }
 
+// Failing seed: 0xfb7b652500000020
 #[test]
 fn test_actions() {
     arbtest(|u| {

@@ -95,7 +95,7 @@ impl Storage for BufferMgr {
     fn select(&self, table: &str) -> Vec<Tuple> {
         let item_ids = self.items.get(table);
         if item_ids.is_none() {
-            return vec![];
+            return vec![vec![]];
         }
         let item_ids = item_ids.unwrap();
         let mut result: Vec<Tuple> = vec![];
