@@ -39,6 +39,23 @@ fn test_insert_and_select() {
     assert_eq!(selected[0][0], Value::Int(1));
 }
 
+#[test]
+fn test_multi_insert() {
+    let buffer_mgr = BufferMgr::new();
+    let mut db = tests::mk_db(buffer_mgr);
+
+    let tup = vec![Value::Int(1)];
+    insert(tup, "tbl".to_string(), &mut db);
+    let tup2 = vec![Value::Int(2)];
+    insert(tup2, "tbl".to_string(), &mut db);
+
+    let selected = select("tbl", &db);
+
+    println!("Selected: {:?}", selected);
+
+    assert_eq!(selected, vec![vec![Value::Int(1)], vec![Value::Int(2)]]);
+}
+
 // Failing seed: 0xfb7b652500000020
 #[test]
 fn test_actions() {
