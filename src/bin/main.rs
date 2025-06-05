@@ -1,11 +1,13 @@
-use reldb::types::{Tuple, Value};
+use reldb::types::{Value};
 use reldb::db::{DB, insert, select};
+use reldb::buffer_mgr::BufferMgr;
 
 
 fn main() {
+    let buffer_mgr: BufferMgr = BufferMgr::new();
     let mut db = DB {
         name: "test".to_string(),
-        blocks: vec![],
+        storage: buffer_mgr,
     };
 
     let tup = vec![Value::Int(1)];

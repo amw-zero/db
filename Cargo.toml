@@ -3,4 +3,5 @@ name = "reldb"
 version = "0.1.0"
 edition = "2021"
 
-[dependencies]
+[dev-dependencies]
+arbtest = "0.3.2"
