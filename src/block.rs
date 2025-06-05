@@ -5,13 +5,13 @@ const BLOCK_SIZE: usize = 8192;
 // It is a fixed-size array of bytes that holds tuple data, along
 // with metadata. Blocks are the raw data persisted in the database.
 // For a more structured representation, see Buffer.
-#[derive(Copy, Clone, Debug)]
-pub struct Block([u8; BLOCK_SIZE]);
+#[derive(Clone, Debug)]
+pub struct Block(Box<[u8; BLOCK_SIZE]>);
 
 impl Block {
     // Create a new empty block
     pub fn new() -> Self {
-        Block([0; BLOCK_SIZE])
+        Block(Box::new([0; BLOCK_SIZE]))
     }
 
     // Get the size of the block

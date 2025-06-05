@@ -8,7 +8,7 @@ const BUFFER_CACHE_SIZE: usize = 50000;
 
 // Buffers are the in-memory representation of blocks that the
 // engine uses for data manipulation. 
-#[derive(Copy, Clone)]
+#[derive(Clone)]
 struct Buffer {
     block: Block
 }
@@ -17,7 +17,7 @@ pub struct BufferMgr {
     // The lowest free buffer index
     lowest_free: usize,
     accessed: BTreeSet<usize>,
-    buffers: [Buffer; BUFFER_CACHE_SIZE],
+    buffers: Vec<Buffer>,
 }
 
 impl BufferMgr {
@@ -26,7 +26,7 @@ impl BufferMgr {
         BufferMgr {
             lowest_free: 0,
             accessed: accessed,
-            buffers: [Buffer { block: Block::new() }; BUFFER_CACHE_SIZE]
+            buffers: vec![Buffer { block: Block::new() }; BUFFER_CACHE_SIZE]
         }
     }
 }
@@ -42,7 +42,7 @@ impl Storage for BufferMgr {
 
     fn select(&self, table: &str) -> Vec<Tuple> {
         let mut result = Vec::new();
-        for buf in &self.buffers {
+        for buf in &*self.buffers {
             let tup = buffer_to_tuple(buf);
             result.push(tup);
         }

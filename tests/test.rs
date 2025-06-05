@@ -42,11 +42,11 @@ mod tests {
 // select * from table;
 #[test]
 fn test_insert_and_select() {
-//    let buffer_mgr = BufferMgr::new();
-    let mem = MemStorage::new();
+    let buffer_mgr = BufferMgr::new();
+    // let mem = MemStorage::new();
     let mut db = DB {
         name: "test".to_string(),
-        storage: mem,
+        storage: buffer_mgr,
     };
 
 //    let tup = vec![Value::Int(1)];
