@@ -1,27 +1,49 @@
+use crate::types::Value;
+
 // Default block size is 8kb
-const BLOCK_SIZE: usize = 8192;
+pub const BLOCK_SIZE: usize = 8192;
 
 // A block is the unit of storage in our database.
 // It is a fixed-size array of bytes that holds tuple data, along
 // with metadata. Blocks are the raw data persisted in the database.
 // For a more structured representation, see Buffer.
+//
+// Block data is stored in the heap to prevent stack overflow.
 #[derive(Clone, Debug)]
-pub struct Block(Box<[u8; BLOCK_SIZE]>);
+pub struct Block {
+    pub end_ptr: usize,
+    pub data: Box<[u8; BLOCK_SIZE]>,
+}
 
 impl Block {
-    // Create a new empty block
     pub fn new() -> Self {
-        Block(Box::new([0; BLOCK_SIZE]))
+        Block {
+            end_ptr: 0,
+            data: Box::new([0; BLOCK_SIZE]),
+        }
     }
 
-    // Get the size of the block
-    pub fn size(&self) -> usize {
-        BLOCK_SIZE
-    }
-
-    // Convert the block to a string representation for debugging
     pub fn to_string(&self) -> String {
         format!("{:?}", self)
     }
 }
 
+pub fn block_encode_value(value: Value) -> Vec<u8> {
+    match value {
+        Value::Int(i) => i.to_le_bytes().to_vec(),
+    }
+}
+
+pub fn block_decode_value(encoded: &[u8]) -> Value {
+    if encoded.len() == 8 {
+        let mut bytes = [0; 8];
+        bytes.copy_from_slice(encoded);
+        Value::Int(i64::from_le_bytes(bytes))
+    } else {
+        panic!("Invalid encoded value length: {}", encoded.len());
+    }
+}
+
+pub fn encoded_data_size(encoded_data: &[u8]) -> usize {
+    encoded_data.len()
+}

@@ -1,7 +1,6 @@
-use reldb::types::{Value};
-use reldb::db::{DB, insert, select};
 use reldb::buffer_mgr::BufferMgr;
-
+use reldb::db::{insert, select, DB};
+use reldb::types::Value;
 
 fn main() {
     let buffer_mgr: BufferMgr = BufferMgr::new();

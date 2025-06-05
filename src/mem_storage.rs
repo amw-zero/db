@@ -1,6 +1,6 @@
-use std::collections::HashMap;
-use crate::types::Tuple;
 use crate::storage::Storage;
+use crate::types::Tuple;
+use std::collections::HashMap;
 pub struct MemStorage {
     data: HashMap<String, Vec<Tuple>>,
 }
@@ -15,7 +15,8 @@ impl MemStorage {
 
 impl Storage for MemStorage {
     fn insert(&mut self, tup: Tuple, table: &str) {
-        self.data.entry(table.to_string())
+        self.data
+            .entry(table.to_string())
             .or_insert_with(Vec::new)
             .push(tup);
     }
