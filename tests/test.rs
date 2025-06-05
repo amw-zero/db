@@ -1,9 +1,9 @@
 use arbtest::arbtest;
-use reldb::buffer_mgr::BufferMgr;
-use reldb::db::{insert, select, DB};
-use reldb::mem_storage::MemStorage;
-use reldb::storage::Storage;
-use reldb::types::Value;
+use db::buffer_mgr::BufferMgr;
+use db::db::{insert, select, DB};
+use db::mem_storage::MemStorage;
+use db::storage::Storage;
+use db::types::Value;
 
 #[cfg(test)]
 mod tests {
@@ -33,8 +33,6 @@ fn test_insert_and_select() {
 
     let selected = select("tbl", &db);
 
-    println!("Selected: {:?}", selected);
-
     assert_eq!(selected.len(), 1);
     assert_eq!(selected[0][0], Value::Int(1));
 }
@@ -50,8 +48,6 @@ fn test_multi_insert() {
     insert(tup2, "tbl".to_string(), &mut db);
 
     let selected = select("tbl", &db);
-
-    println!("Selected: {:?}", selected);
 
     assert_eq!(selected, vec![vec![Value::Int(1)], vec![Value::Int(2)]]);
 }

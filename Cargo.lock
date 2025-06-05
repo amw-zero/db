@@ -18,7 +18,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "reldb"
+name = "db"
 version = "0.1.0"
 dependencies = [
  "arbtest",
