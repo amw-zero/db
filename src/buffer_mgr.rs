@@ -5,12 +5,12 @@ use std::collections::BTreeSet;
 use std::collections::HashMap;
 
 // Unit: Number of blocks in the buffer cache
-const BUFFER_CACHE_SIZE: usize = 5;
+const BUFFER_CACHE_SIZE: usize = 10;
 
 // Buffers are the in-memory representation of blocks that the
 // engine uses for data manipulation. Buffers contain additional
 // metadata useful for the managing of blocks in the buffer cache.
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 struct Buffer {
     size_remaining: usize,
     block: Block,
@@ -25,6 +25,7 @@ impl Buffer {
     }
 }
 
+#[derive(Debug)]
 struct ItemId {
     // The index of the buffer in the buffer cache
     buffer_idx: usize,
@@ -36,6 +37,7 @@ struct ItemId {
     size: usize,
 }
 
+#[derive(Debug)]
 pub struct BufferMgr {
     // Recently accessed buffers, to control eviction
     // Not implemented yet.
@@ -104,9 +106,8 @@ impl Storage for BufferMgr {
             let start = item_id.offset;
             let end = start + item_id.size;
             let data_slice = &buffer.block.data[start..end];
-            let value = block_decode_value(data_slice);
 
-            let tuple: Tuple = vec![value]; // Convert the value to a Tuple
+            let tuple = block_decode_value(data_slice);
             result.push(tuple);
         }
 

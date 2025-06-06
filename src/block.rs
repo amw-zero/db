@@ -34,14 +34,14 @@ pub fn block_encode_value(value: Value) -> Vec<u8> {
     }
 }
 
-pub fn block_decode_value(encoded: &[u8]) -> Value {
-    if encoded.len() == 8 {
-        let mut bytes = [0; 8];
-        bytes.copy_from_slice(encoded);
-        Value::Int(i64::from_le_bytes(bytes))
-    } else {
-        panic!("Invalid encoded value length: {}", encoded.len());
-    }
+pub fn block_decode_value(encoded: &[u8]) -> Vec<Value> {
+    encoded
+        .chunks(8)
+        .map(|chunk| {
+            let bytes = chunk.try_into().expect("Slice with incorrect length");
+            Value::Int(i64::from_le_bytes(bytes))
+        })
+        .collect()
 }
 
 pub fn encoded_data_size(encoded_data: &[u8]) -> usize {

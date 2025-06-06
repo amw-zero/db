@@ -5,3 +5,6 @@ edition = "2021"
 
 [dev-dependencies]
 arbtest = "0.3.2"
+
+[dependencies]
+arbitrary = "1.4.1"
